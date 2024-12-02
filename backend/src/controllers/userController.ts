@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { signinSchema, signupSchema } from "../utils/validators";
 import z from "zod";
 const bcrypt = require("bcrypt");
@@ -56,7 +56,14 @@ async function userSignup(req: Request, res: Response) {
         secure: true,
       });
 
-      return res.status(201).json({ user: user._id, token: token });
+      return res
+        .status(201)
+        .json({
+          user: user._id,
+          name: user.username,
+          email: user.email,
+          token: token,
+        });
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -110,7 +117,14 @@ async function userSignin(req: Request, res: Response) {
       secure: true,
     });
 
-    return res.status(200).json({ id: existingUser._id, token });
+    return res
+      .status(200)
+      .json({
+        id: existingUser._id,
+        name: existingUser.username,
+        email: existingUser.email,
+        token,
+      });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors[0].message });
@@ -121,4 +135,23 @@ async function userSignin(req: Request, res: Response) {
   }
 }
 
-module.exports = { getAllUsers, userSignup, userSignin };
+const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    //user token check
+    const user = await User.findById(res.locals.jwtData.id);
+    if (!user) {
+      return res.status(401).send("User not registered OR Token malfunctioned");
+    }
+    if (user._id.toString() !== res.locals.jwtData.id) {
+      return res.status(401).send("Permissions didn't match");
+    }
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "ERROR", cause: error.message });
+  }
+};
+
+module.exports = { getAllUsers, userSignup, userSignin, verifyUser };
