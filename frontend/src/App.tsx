@@ -9,7 +9,7 @@ import { useAuth } from "./context/AuthContext"
 
 function App() {
 
-  
+  const auth = useAuth();
   return (
     <>
       <main>
@@ -18,7 +18,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          {auth?.isLoggedIn && auth.user && (
           <Route path="/chat" element={<Chat />} />
+        )}
 
 
           <Route path="*" element={<Notfound />} />
