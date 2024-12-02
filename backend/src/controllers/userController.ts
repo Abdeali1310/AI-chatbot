@@ -18,15 +18,15 @@ async function getAllUsers(req: Request, res: Response) {
 
 async function userSignup(req: Request, res: Response) {
   try {
-    const { username, password, email } = signupSchema.parse(req.body);
+    const { name, password, email } = signupSchema.parse(req.body);
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ name });
     if (existingUser) {
-      return res.status(400).json({ message: "Username already exists" });
+      return res.status(400).json({ message: "username already exists" });
     }
 
     const user = await User.create({
-      username,
+      name,
       password,
       email,
     });
@@ -60,7 +60,7 @@ async function userSignup(req: Request, res: Response) {
         .status(201)
         .json({
           user: user._id,
-          name: user.username,
+          name: user.name,
           email: user.email,
           token: token,
         });

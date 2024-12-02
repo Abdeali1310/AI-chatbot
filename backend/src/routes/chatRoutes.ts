@@ -1,8 +1,8 @@
+import { verifyToken } from "../utils/token-manager";
+const { generateChatCompletion } = require("../controllers/chatController");
 const express = require("express");
-const chatRouter =  express.Router();
+const chatRouter = express.Router();
 
-chatRouter.get("/",(req,res)=>{
-    res.send("Hello World")
-})
+chatRouter.post("/new", verifyToken, generateChatCompletion);
 
-module.exports = chatRouter
+module.exports = chatRouter;
