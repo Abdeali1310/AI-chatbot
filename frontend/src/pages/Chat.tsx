@@ -75,7 +75,7 @@ const Chat = () => {
     };
 
     checkAuth();
-    
+
   }, [auth, navigate]);
   return (
     <Box
@@ -116,10 +116,10 @@ const Chat = () => {
             }}
           >
             {/* @ts-ignore */}
-            {auth?.user?.name?.[0] || ""}
+            {auth?.user?.name?.[0].toUpperCase() || ""}
 
             {/* @ts-ignore */}
-            {auth?.user?.name?.split(" ")[1]?.[0] || ""}
+            {auth?.user?.name?.split(" ")[1]?.[0].toUpperCase() || ""}
           </Avatar>
           <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
             You are talking to a ChatBOT

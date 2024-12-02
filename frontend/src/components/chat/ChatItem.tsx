@@ -45,8 +45,8 @@ const ChatItem = ({
         my: 1,
       }}
     >
-      <Avatar sx={{ ml: "0" }}>
-        <img src="ai.png" alt="openai" width={"30px"} />
+      <Avatar sx={{ ml: "0" ,backgroundColor:"#000"}}>
+        <img src="ai.png" alt="openai" width={"30px"}/>
       </Avatar>
       <Box>
         {!messageBlocks && (
@@ -77,10 +77,10 @@ const ChatItem = ({
     >
       <Avatar sx={{ ml: "0", bgcolor: "black", color: "white" }}>
         {/* @ts-ignore */}
-        {auth?.user?.name?.[0] || ""}
+        {auth?.user?.name?.[0].toUpperCase() || ""}
 
         {/* @ts-ignore */}
-        {auth?.user?.name?.split(" ")[1]?.[0] || ""}
+        {auth?.user?.name?.split(" ")[1]?.[0].toUpperCase() || ""}
       </Avatar>
       <Box>
         {!messageBlocks && (
